@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="pt-br">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Cotação de Moedas</title>
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='style.css') }}"
+    />
+  </head>
+
+  <body>
+    <div class="container">
+      <h1>💰 Cotação de Moedas</h1>
+
+      <form method="POST">
+        <label>Moeda:</label>
+        <select name="moeda">
+        <option value="USD" {{ 'selected' if moeda == 'USD' else '' }}>Dólar</option>
+        <option value="EUR" {{ 'selected' if moeda == 'EUR' else '' }}>Euro</option>
+        <option value="BTC" {{ 'selected' if moeda == 'BTC' else '' }}>Bitcoin</option>
+        </select>
+
+        <label>Data:</label>
+        <input type="date" name="data" required />
+
+        <button type="submit">Buscar Cotação</button>
+      </form>
+
+      {% if resultado %}
+      <div class="resultado">
+        <strong>
+          {% if moeda == 'USD' %}💵 Dólar{% endif %} {% if moeda == 'EUR' %}💶
+          Euro{% endif %} {% if moeda == 'BTC' %}🪙 Bitcoin{% endif %}
+        </strong>
+        <br />
+        {{ resultado }}
+      </div>
+      {% endif %}
+    </div>
+  </body>
+</html>

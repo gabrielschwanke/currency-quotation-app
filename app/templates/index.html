@@ -10,15 +10,34 @@
   </head>
 
   <body>
+  <header class="header">
+    <div class="logo">💰 CurrencyApp</div>
+
+    <nav class="nav">
+      <a href="#">Home</a>
+      <a href="#">Histórico</a>
+      <a href="#">Sobre</a>
+    </nav>
+
+    <div class="user-area">
+      {% if usuario %}
+      <span>Olá, {{ usuario }}</span>
+      {% else %}
+      <a href="/login" class="btn-login">Login</a>
+      {% endif %}
+   </div>
+  </header>
+
+  <div class="main-content">
     <div class="container">
       <h1>💰 Cotação de Moedas</h1>
 
       <form method="POST">
         <label>Moeda:</label>
         <select name="moeda">
-        <option value="USD" {{ 'selected' if moeda == 'USD' else '' }}>Dólar</option>
-        <option value="EUR" {{ 'selected' if moeda == 'EUR' else '' }}>Euro</option>
-        <option value="BTC" {{ 'selected' if moeda == 'BTC' else '' }}>Bitcoin</option>
+          <option value="USD" {{ 'selected' if moeda == 'USD' else '' }}>Dólar</option>
+          <option value="EUR" {{ 'selected' if moeda == 'EUR' else '' }}>Euro</option>
+          <option value="BTC" {{ 'selected' if moeda == 'BTC' else '' }}>Bitcoin</option>
         </select>
 
         <label>Data:</label>
@@ -30,13 +49,14 @@
       {% if resultado %}
       <div class="resultado">
         <strong>
-          {% if moeda == 'USD' %}💵 Dólar{% endif %} {% if moeda == 'EUR' %}💶
-          Euro{% endif %} {% if moeda == 'BTC' %}🪙 Bitcoin{% endif %}
+          {% if moeda == 'USD' %}💵 Dólar{% endif %}
+          {% if moeda == 'EUR' %}💶 Euro{% endif %}
+          {% if moeda == 'BTC' %}🪙 Bitcoin{% endif %}
         </strong>
         <br />
         {{ resultado }}
       </div>
       {% endif %}
     </div>
-  </body>
-</html>
+  </div>
+</body>

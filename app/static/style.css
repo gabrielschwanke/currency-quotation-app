@@ -6,14 +6,7 @@ body {
   min-height: 100vh;
   position: relative;
 }
-.main-content {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 100%;
-  min-height: calc(100vh - 80px);
-  margin-top: 80px;
-}
+
 
 body::before {
   content: "";
@@ -149,3 +142,62 @@ button:hover {
 .btn-login:hover {
   transform: scale(1.05);
 }
+
+.section {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+.chart-container {
+  width: 800px;
+  max-width: 90%;     
+}
+
+.chart-wrapper {
+  width: 100%;
+  max-width: 1100px;
+  display: flex;
+  gap: 30px;
+  align-items: center;
+  justify-content: center;
+}
+
+/* CONTROLES (lado esquerdo) */
+.chart-controls {
+  width: 250px;
+  backdrop-filter: blur(20px);
+  background: rgba(0, 0, 0, 0.4);
+  padding: 20px;
+  border-radius: 15px;
+  color: white;
+}
+
+/* GRÁFICO GRANDE */
+.chart-full {
+  flex: 1;
+  backdrop-filter: blur(20px);
+  background: rgba(0, 0, 0, 0.4);
+  padding: 20px;
+  border-radius: 15px;
+}
+
+/* TAMANHO DO GRÁFICO */
+.chart-full canvas {
+  width: 100% !important;
+  height: 400px !important;
+}
+
+/* TEXTO VARIAÇÃO */
+#infoVariacao {
+  text-align: center;
+  margin-top: 15px;
+  font-size: 18px;
+  font-weight: bold;
+}
+

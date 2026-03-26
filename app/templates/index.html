@@ -10,53 +10,92 @@
   </head>
 
   <body>
-  <header class="header">
-    <div class="logo">💰 CurrencyApp</div>
+    <header class="header">
+      <div class="logo">💰 CurrencyApp</div>
 
-    <nav class="nav">
-      <a href="#">Home</a>
-      <a href="#">Histórico</a>
-      <a href="#">Sobre</a>
-    </nav>
+      <nav class="nav">
+        <a href="#home">Home</a>
+        <a href="#chart">Chart</a>
+        <a href="#about">About</a>
+      </nav>
 
-    <div class="user-area">
-      {% if usuario %}
-      <span>Olá, {{ usuario }}</span>
-      {% else %}
-      <a href="/login" class="btn-login">Login</a>
-      {% endif %}
-   </div>
-  </header>
-
-  <div class="main-content">
-    <div class="container">
-      <h1>💰 Cotação de Moedas</h1>
-
-      <form method="POST">
-        <label>Moeda:</label>
-        <select name="moeda">
-          <option value="USD" {{ 'selected' if moeda == 'USD' else '' }}>Dólar</option>
-          <option value="EUR" {{ 'selected' if moeda == 'EUR' else '' }}>Euro</option>
-          <option value="BTC" {{ 'selected' if moeda == 'BTC' else '' }}>Bitcoin</option>
-        </select>
-
-        <label>Data:</label>
-        <input type="date" name="data" required />
-
-        <button type="submit">Buscar Cotação</button>
-      </form>
-
-      {% if resultado %}
-      <div class="resultado">
-        <strong>
-          {% if moeda == 'USD' %}💵 Dólar{% endif %}
-          {% if moeda == 'EUR' %}💶 Euro{% endif %}
-          {% if moeda == 'BTC' %}🪙 Bitcoin{% endif %}
-        </strong>
-        <br />
-        {{ resultado }}
+      <div class="user-area">
+        {% if usuario %}
+        <span>Olá, {{ usuario }}</span>
+        {% else %}
+        <a href="/login" class="btn-login">Login</a>
+        {% endif %}
       </div>
-      {% endif %}
-    </div>
-  </div>
-</body>
+    </header>
+
+    <!-- HOME -->
+    <section id="home" class="section">
+      <div class="container">
+        <h1>💰 Currency Exchange</h1>
+
+        <form method="POST">
+          <label>Currency:</label>
+          <select name="moeda">
+            <option value="USD">USD</option>
+            <option value="EUR">EUR</option>
+            <option value="BTC">BTC</option>
+          </select>
+
+          <label>Date:</label>
+          <input type="date" name="data" required />
+
+          <button type="submit">Get Quote</button>
+        </form>
+
+        {% if resultado %}
+        <div class="resultado">{{ resultado }}</div>
+        {% endif %}
+      </div>
+    </section>
+
+    <!-- CHART -->
+    <section id="chart" class="section">
+      <div class="chart-wrapper">
+        <!-- CONTROLES -->
+        <div class="chart-controls">
+          <h2>📊 Currency Chart</h2>
+
+          <select id="moeda">
+            <option value="USD">USD</option>
+            <option value="EUR">EUR</option>
+            <option value="BTC">BTC</option>
+          </select>
+
+          <select id="periodo">
+            <option value="7">7 Days</option>
+            <option value="15">15 Days</option>
+            <option value="30">30 Days</option>
+          </select>
+
+          <button onclick="carregarGrafico()">Load Chart</button>
+
+          <h3 id="infoVariacao"></h3>
+        </div>
+
+        <!-- GRÁFICO -->
+        <div class="chart-full">
+          <canvas id="grafico"></canvas>
+        </div>
+      </div>
+    </section>
+
+    <!-- ABOUT -->
+    <section id="about" class="section">
+      <div class="container">
+        <h2>About</h2>
+        <p>
+          This project allows users to check real-time currency exchange rates
+          and visualize trends using charts.
+        </p>
+      </div>
+    </section>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="{{ url_for('static', filename='js/chart.js') }}"></script>
+  </body>
+</html>

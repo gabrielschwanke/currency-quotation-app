@@ -1,5 +1,6 @@
 import requests
 
+
 def buscar_cotacao(moeda, data):
     try:
         ano = data[0:4]
@@ -17,5 +18,28 @@ def buscar_cotacao(moeda, data):
         else:
             return "Cotação não encontrada"
 
-    except:
+    except Exception as e:
+        print(e)
         return "Erro ao buscar cotação"
+
+
+# 🔥 NOVA FUNÇÃO PARA O GRÁFICO
+def buscar_historico(moeda, dias=7):
+    try:
+        url = f"https://economia.awesomeapi.com.br/json/daily/{moeda}-BRL/{dias}"
+        response = requests.get(url)
+        dados = response.json()
+
+        historico = []
+
+        for item in reversed(dados):  # ordem cronológica
+            historico.append({
+                "data": int(item["timestamp"]),
+                "valor": float(item["bid"])
+            })
+
+        return historico
+
+    except Exception as e:
+        print(e)
+        return []

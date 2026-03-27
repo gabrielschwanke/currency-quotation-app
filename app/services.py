@@ -1,45 +1,131 @@
+from datetime import datetime
+from typing import List, Dict, Any, Optional
 import requests
 
+BASE_URL = "https://economia.awesomeapi.com.br"
+TIMEOUT = 10
 
-def buscar_cotacao(moeda, data):
+
+def _request_json(url: str) -> Any:
+    response = requests.get(url, timeout=TIMEOUT)
+    response.raise_for_status()
+    return response.json()
+
+
+def _normalizar_data(data: str) -> str:
+    """
+    Recebe data no formato YYYY-MM-DD e devolve YYYYMMDD.
+    Lança ValueError se a data for inválida.
+    """
+    data_obj = datetime.strptime(data, "%Y-%m-%d")
+    return data_obj.strftime("%Y%m%d")
+
+
+def _normalizar_timestamp(timestamp: Any) -> int:
+    """
+    Normaliza timestamp para segundos.
+    A AwesomeAPI pode retornar segundos ou milissegundos
+    dependendo do endpoint/contexto.
+    """
+    ts = int(timestamp)
+
+    # Se vier em milissegundos, converte para segundos
+    if ts > 9999999999:
+        ts = ts // 1000
+
+    return ts
+
+
+def buscar_cotacao(moeda: str, data: str) -> str:
+    """
+    Busca a cotação de uma moeda para uma data específica.
+    Retorna string formatada para exibição no template.
+    """
     try:
-        ano = data[0:4]
-        mes = data[5:7]
-        dia = data[8:10]
+        moeda = moeda.upper().strip()
+        data_formatada = _normalizar_data(data)
 
-        url = f'https://economia.awesomeapi.com.br/json/daily/{moeda}-BRL/?start_date={ano}{mes}{dia}&end_date={ano}{mes}{dia}'
-        
-        response = requests.get(url)
-        dados = response.json()
+        url = (
+            f"{BASE_URL}/json/daily/{moeda}-BRL/"
+            f"?start_date={data_formatada}&end_date={data_formatada}"
+        )
 
-        if dados:
-            valor = float(dados[0]['bid'])
-            return f"R$ {valor:.2f}"
-        else:
-            return "Cotação não encontrada"
+        dados = _request_json(url)
 
-    except Exception as e:
-        print(e)
-        return "Erro ao buscar cotação"
+        if isinstance(dados, dict) and dados.get("status"):
+            return "Cotação não encontrada para a moeda informada."
+
+        if not isinstance(dados, list) or not dados:
+            return "Cotação não encontrada para a data informada."
+
+        item = dados[0]
+        bid = item.get("bid")
+
+        if bid is None:
+            return "Cotação indisponível no momento."
+
+        valor = float(bid)
+        return f"R$ {valor:,.2f}".replace(",", "X").replace(".", ",").replace("X", ".")
+
+    except ValueError:
+        return "Data inválida. Use uma data válida no formato correto."
+    except requests.exceptions.Timeout:
+        return "A consulta demorou demais para responder. Tente novamente."
+    except requests.exceptions.RequestException:
+        return "Erro de conexão ao buscar a cotação."
+    except (KeyError, TypeError, IndexError):
+        return "Resposta inválida ao buscar a cotação."
+    except Exception:
+        return "Erro ao buscar cotação."
 
 
-# 🔥 NOVA FUNÇÃO PARA O GRÁFICO
-def buscar_historico(moeda, dias=7):
+def buscar_historico(moeda: str, dias: int = 7) -> List[Dict[str, Any]]:
+    """
+    Busca histórico de fechamento da moeda nos últimos dias.
+    Retorna lista no formato:
+    [
+        {"data": 1711843200, "valor": 5.12},
+        ...
+    ]
+    """
     try:
-        url = f"https://economia.awesomeapi.com.br/json/daily/{moeda}-BRL/{dias}"
-        response = requests.get(url)
-        dados = response.json()
+        moeda = moeda.upper().strip()
+        dias = int(dias)
 
-        historico = []
+        url = f"{BASE_URL}/json/daily/{moeda}-BRL/{dias}"
+        dados = _request_json(url)
 
-        for item in reversed(dados):  # ordem cronológica
-            historico.append({
-                "data": int(item["timestamp"]),
-                "valor": float(item["bid"])
-            })
+        if isinstance(dados, dict) and dados.get("status"):
+            return []
 
+        if not isinstance(dados, list) or not dados:
+            return []
+
+        historico: List[Dict[str, Any]] = []
+
+        for item in dados:
+            try:
+                timestamp = item.get("timestamp")
+                bid = item.get("bid")
+
+                if timestamp is None or bid is None:
+                    continue
+
+                historico.append(
+                    {
+                        "data": _normalizar_timestamp(timestamp),
+                        "valor": float(bid),
+                    }
+                )
+            except (ValueError, TypeError):
+                continue
+
+        historico.sort(key=lambda x: x["data"])
         return historico
 
-    except Exception as e:
-        print(e)
+    except requests.exceptions.Timeout:
+        return []
+    except requests.exceptions.RequestException:
+        return []
+    except Exception:
         return []

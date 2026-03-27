@@ -2,6 +2,7 @@
 <html lang="pt-br">
   <head>
     <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Cotação de Moedas</title>
     <link
       rel="stylesheet"
@@ -11,89 +12,176 @@
 
   <body>
     <header class="header">
-      <div class="logo">💰 CurrencyApp</div>
+      <div class="header-inner">
+        <a href="#home" class="logo">💰 CurrencyApp</a>
 
-      <nav class="nav">
-        <a href="#home">Home</a>
-        <a href="#chart">Chart</a>
-        <a href="#about">About</a>
-      </nav>
+        <nav class="nav">
+          <a href="#home">Início</a>
+          <a href="#chart">Gráfico</a>
+          <a href="#about">Sobre</a>
+        </nav>
 
-      <div class="user-area">
-        {% if usuario %}
-        <span>Olá, {{ usuario }}</span>
-        {% else %}
-        <a href="/login" class="btn-login">Login</a>
-        {% endif %}
+        <div class="user-area">
+          {% if usuario %}
+          <span class="user-greeting">Olá, {{ usuario }}</span>
+          {% else %}
+          <a href="/login" class="btn-login">Login</a>
+          {% endif %}
+        </div>
       </div>
     </header>
 
-    <!-- HOME -->
-    <section id="home" class="section">
-      <div class="container">
-        <h1>💰 Currency Exchange</h1>
+    <main>
+      <!-- HOME -->
+      <section id="home" class="section hero-section">
+        <div class="page-shell hero-grid">
+          <div class="hero-content">
+            <span class="eyebrow">Plataforma de câmbio</span>
+            <h1>Consulte cotações de moedas com rapidez e clareza</h1>
+            <p class="hero-text">
+              Veja valores atualizados, pesquise por data e acompanhe a
+              variação das principais moedas em um layout moderno e intuitivo.
+            </p>
 
-        <form method="POST">
-          <label>Currency:</label>
-          <select name="moeda">
-            <option value="USD">USD</option>
-            <option value="EUR">EUR</option>
-            <option value="BTC">BTC</option>
-          </select>
+            <div class="hero-badges">
+              <span>Cotação por data</span>
+              <span>Gráfico histórico</span>
+              <span>Visual responsivo</span>
+            </div>
+          </div>
 
-          <label>Date:</label>
-          <input type="date" name="data" required />
+          <div class="glass-card hero-card">
+            <div class="card-header">
+              <h2>Buscar cotação</h2>
+              <p>Selecione a moeda e a data desejada.</p>
+            </div>
 
-          <button type="submit">Get Quote</button>
-        </form>
+            <form method="POST" class="quote-form">
+              <div class="field">
+                <label for="moeda-form">Moeda</label>
+                <select id="moeda-form" name="moeda">
+                  <option value="USD">Dólar (USD)</option>
+                  <option value="EUR">Euro (EUR)</option>
+                  <option value="BTC">Bitcoin (BTC)</option>
+                </select>
+              </div>
 
-        {% if resultado %}
-        <div class="resultado">{{ resultado }}</div>
-        {% endif %}
-      </div>
-    </section>
+              <div class="field">
+                <label for="data">Data</label>
+                <input id="data" type="date" name="data" required />
+              </div>
 
-    <!-- CHART -->
-    <section id="chart" class="section">
-      <div class="chart-wrapper">
-        <!-- CONTROLES -->
-        <div class="chart-controls">
-          <h2>📊 Currency Chart</h2>
+              <button type="submit">Buscar cotação</button>
+            </form>
 
-          <select id="moeda">
-            <option value="USD">USD</option>
-            <option value="EUR">EUR</option>
-            <option value="BTC">BTC</option>
-          </select>
-
-          <select id="periodo">
-            <option value="7">7 Days</option>
-            <option value="15">15 Days</option>
-            <option value="30">30 Days</option>
-          </select>
-
-          <button onclick="carregarGrafico()">Load Chart</button>
-
-          <h3 id="infoVariacao"></h3>
+            {% if resultado %}
+            <div class="resultado">{{ resultado }}</div>
+            {% endif %}
+          </div>
         </div>
+      </section>
 
-        <!-- GRÁFICO -->
-        <div class="chart-full">
-          <canvas id="grafico"></canvas>
+      <!-- CHART -->
+      <section id="chart" class="section">
+        <div class="page-shell">
+          <div class="section-title">
+            <span class="eyebrow">Análise visual</span>
+            <h2>Gráfico de variação</h2>
+            <p>
+              Compare o comportamento da moeda escolhida em diferentes períodos.
+            </p>
+          </div>
+
+          <div class="chart-wrapper">
+            <aside class="glass-card chart-controls">
+              <h3>Configurar gráfico</h3>
+
+              <div class="field">
+                <label for="moeda">Moeda</label>
+                <select id="moeda">
+                  <option value="USD">Dólar (USD)</option>
+                  <option value="EUR">Euro (EUR)</option>
+                  <option value="BTC">Bitcoin (BTC)</option>
+                </select>
+              </div>
+
+              <div class="field">
+                <label for="periodo">Período</label>
+                <select id="periodo">
+                  <option value="7">7 dias</option>
+                  <option value="15">15 dias</option>
+                  <option value="30">30 dias</option>
+                </select>
+              </div>
+
+              <button type="button" onclick="carregarGrafico()">
+                Carregar gráfico
+              </button>
+
+              <div class="variation-box">
+                <span class="variation-label">Resumo</span>
+                <h3 id="infoVariacao">Selecione uma moeda e um período.</h3>
+              </div>
+            </aside>
+
+            <div class="glass-card chart-full">
+              <div class="chart-header">
+                <h3>Desempenho histórico</h3>
+                <p>Visualização da cotação ao longo do período selecionado.</p>
+              </div>
+
+              <div class="chart-canvas-area">
+                <canvas id="grafico"></canvas>
+              </div>
+            </div>
+          </div>
         </div>
-      </div>
-    </section>
+      </section>
 
-    <!-- ABOUT -->
-    <section id="about" class="section">
-      <div class="container">
-        <h2>About</h2>
-        <p>
-          This project allows users to check real-time currency exchange rates
-          and visualize trends using charts.
-        </p>
+      <!-- ABOUT -->
+      <section id="about" class="section">
+        <div class="page-shell">
+          <div class="glass-card about-card">
+            <div class="section-title section-title-left">
+              <span class="eyebrow">Sobre o projeto</span>
+              <h2>Uma interface simples para acompanhar moedas</h2>
+            </div>
+
+            <p>
+              Este projeto permite consultar cotações de moedas e acompanhar a
+              variação de valores com gráficos interativos. A proposta é
+              oferecer uma experiência limpa, moderna e fácil de usar, tanto em
+              desktop quanto em dispositivos móveis.
+            </p>
+
+            <div class="about-features">
+              <div class="about-item">
+                <h3>Consulta rápida</h3>
+                <p>Pesquise valores com poucos cliques e de forma objetiva.</p>
+              </div>
+
+              <div class="about-item">
+                <h3>Leitura visual</h3>
+                <p>Entenda tendências com gráficos claros e organizados.</p>
+              </div>
+
+              <div class="about-item">
+                <h3>Base para evolução</h3>
+                <p>
+                  Estrutura pronta para receber novas moedas, filtros e métricas.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <div class="page-shell footer-inner">
+        <p>© 2026 CurrencyApp — Projeto de cotação de moedas</p>
       </div>
-    </section>
+    </footer>
 
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="{{ url_for('static', filename='js/chart.js') }}"></script>

@@ -13,8 +13,12 @@
   <body>
     <header class="header">
       <div class="header-inner">
-        <a href="#home" class="logo">💰 CurrencyApp</a>
-
+        <a href="#home" class="logo">
+          <img
+            src="{{ url_for('static', filename='img/logo.png') }}"
+            alt="logo"
+          />
+        </a>
         <nav class="nav">
           <a href="#home">Início</a>
           <a href="#chart">Gráfico</a>
@@ -39,8 +43,8 @@
             <span class="eyebrow">Plataforma de câmbio</span>
             <h1>Consulte cotações de moedas com rapidez e clareza</h1>
             <p class="hero-text">
-              Veja valores atualizados, pesquise por data e acompanhe a
-              variação das principais moedas em um layout moderno e intuitivo.
+              Veja valores atualizados, pesquise por data e acompanhe a variação
+              das principais moedas.
             </p>
 
             <div class="hero-badges">
@@ -168,7 +172,8 @@
               <div class="about-item">
                 <h3>Base para evolução</h3>
                 <p>
-                  Estrutura pronta para receber novas moedas, filtros e métricas.
+                  Estrutura pronta para receber novas moedas, filtros e
+                  métricas.
                 </p>
               </div>
             </div>

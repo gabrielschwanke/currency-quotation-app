@@ -37,8 +37,16 @@ body {
   font-family: "Segoe UI", Arial, sans-serif;
   color: var(--text);
   background:
-    radial-gradient(circle at top left, rgba(56, 189, 248, 0.14), transparent 24%),
-    radial-gradient(circle at bottom right, rgba(37, 99, 235, 0.14), transparent 22%),
+    radial-gradient(
+      circle at top left,
+      rgba(56, 189, 248, 0.14),
+      transparent 24%
+    ),
+    radial-gradient(
+      circle at bottom right,
+      rgba(37, 99, 235, 0.14),
+      transparent 22%
+    ),
     linear-gradient(135deg, var(--bg-1), var(--bg-2) 45%, var(--bg-3));
   min-height: 100vh;
 }
@@ -75,10 +83,15 @@ a {
 }
 
 .logo {
-  font-size: 1.2rem;
-  font-weight: 700;
-  letter-spacing: 0.3px;
-  white-space: nowrap;
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+}
+
+.logo img {
+  width: 200px;
+  height: auto;
+  display: block;
 }
 
 .nav {
@@ -136,7 +149,10 @@ button {
   font-weight: 700;
   font-size: 0.95rem;
   cursor: pointer;
-  transition: transform 0.22s ease, box-shadow 0.22s ease, opacity 0.22s ease;
+  transition:
+    transform 0.22s ease,
+    box-shadow 0.22s ease,
+    opacity 0.22s ease;
   box-shadow: 0 10px 24px rgba(37, 99, 235, 0.28);
 }
 
@@ -300,7 +316,10 @@ select {
   padding: 14px 14px;
   font-size: 0.98rem;
   outline: none;
-  transition: border-color 0.22s ease, box-shadow 0.22s ease, background 0.22s ease;
+  transition:
+    border-color 0.22s ease,
+    box-shadow 0.22s ease,
+    background 0.22s ease;
 }
 
 input::placeholder {

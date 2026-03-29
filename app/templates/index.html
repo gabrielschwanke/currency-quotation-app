@@ -4,7 +4,11 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Cotação de Moedas</title>
-    <link rel="icon" type="image/png" href="{{ url_for('static', filename='img/favicon.png') }}">
+    <link
+      rel="icon"
+      type="image/png"
+      href="{{ url_for('static', filename='img/favicon.png') }}"
+    />
     <link
       rel="stylesheet"
       href="{{ url_for('static', filename='style.css') }}"
@@ -51,7 +55,7 @@
             <div class="hero-badges">
               <span>Cotação por data</span>
               <span>Gráfico histórico</span>
-              <span>Visual responsivo</span>
+              <span>Criptomoedas</span>
             </div>
           </div>
 
@@ -185,11 +189,12 @@
 
     <footer class="footer">
       <div class="page-shell footer-inner">
-        <p>© 2026 CurrencyApp — Projeto de cotação de moedas</p>
+        <p>© 2026 Convert.coin — Projeto de cotação de moedas</p>
       </div>
     </footer>
 
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="{{ url_for('static', filename='js/chart.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/effects.js') }}"></script>
   </body>
 </html>

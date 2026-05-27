@@ -30,14 +30,6 @@
           <a href="#chart">Gráfico</a>
           <a href="#about">Sobre</a>
         </nav>
-
-        <div class="user-area">
-          {% if usuario %}
-          <span class="user-greeting">Olá, {{ usuario }}</span>
-          {% else %}
-          <a href="/login" class="btn-login">Login</a>
-          {% endif %}
-        </div>
       </div>
     </header>
 
@@ -183,9 +175,19 @@
               </div>
 
               <div class="about-item">
-                <h3>Leitura visual</h3>
-                <p>Entenda tendências com gráficos claros e organizados.</p>
-              </div>
+                <h3>As moedas mais pesquisadas</h3>
+                <p>Acompanhe em tempo real o comportamento das divisas mais fortes do mercado global:</p>
+                
+                <div class="currency-badges-row">
+                  <img src="https://purecatamphetamine.github.io/country-flag-icons/3x2/US.svg" class="badge-flag" title="Dólar Americano" alt="EUA">
+                  <img src="https://purecatamphetamine.github.io/country-flag-icons/3x2/EU.svg" class="badge-flag" title="Euro" alt="União Europeia">
+                  <img src="https://purecatamphetamine.github.io/country-flag-icons/3x2/GB.svg" class="badge-flag" title="Libra Esterlina" alt="Reino Unido">
+                  <img src="https://purecatamphetamine.github.io/country-flag-icons/3x2/JP.svg" class="badge-flag" title="Iene Japonês" alt="Japão">
+                  <img src="https://purecatamphetamine.github.io/country-flag-icons/3x2/CN.svg" class="badge-flag" title="Yuan Chinês" alt="China">
+                  
+                  <img src="https://api.iconify.design/logos:bitcoin.svg" class="badge-flag crypto-icon" title="Bitcoin" alt="Bitcoin">
+                </div>
+</div>
 
               <div class="about-item">
                 <h3>Base para evolução</h3>

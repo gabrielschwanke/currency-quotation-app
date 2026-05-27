@@ -94,7 +94,9 @@ a {
   display: block;
   transform: scale(1);
   /* Adicionamos o filter na transição para que a luz também apareça suavemente */
-  transition: transform 0.3s ease-in-out, filter 0.3s ease-in-out;
+  transition:
+    transform 0.3s ease-in-out,
+    filter 0.3s ease-in-out;
   backface-visibility: hidden;
   filter: drop-shadow(0 0 0 rgba(168, 203, 25, 0));
 }
@@ -108,6 +110,8 @@ a {
   display: flex;
   align-items: center;
   gap: 24px;
+  margin-right: auto;
+  margin-left: auto;
 }
 
 .nav a {
@@ -257,7 +261,10 @@ main {
 .glass-card {
   position: relative;
   overflow: hidden; /* Importante para o brilho não vazar */
-  transition: transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+  transition:
+    transform 0.3s ease,
+    border-color 0.3s ease,
+    box-shadow 0.3s ease;
   background: rgba(255, 255, 255, 0.08);
   border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: var(--radius-lg);
@@ -281,8 +288,8 @@ main {
   width: 100%;
   height: 100%;
   background: radial-gradient(
-   800px circle at var(--mouse-x) var(--mouse-y), 
-    rgba(248, 248, 248, 0.1), 
+    800px circle at var(--mouse-x) var(--mouse-y),
+    rgba(248, 248, 248, 0.1),
     transparent 50%
   );
   z-index: 1;
@@ -505,6 +512,39 @@ input[type="date"]::-webkit-calendar-picker-indicator {
   margin: 0;
   color: var(--muted);
   font-size: 0.92rem;
+}
+
+/* Container das bandeiras */
+.currency-badges-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px; /* Aumentei um pouquinho o espaço */
+  margin-top: 14px;
+  align-items: center; /* Garante que fiquem alinhadas na mesma linha horizontal */
+}
+
+/* Ajuste focado em tags <img> */
+.badge-flag {
+  width: 28px; /* Define o tamanho padrão da bandeira */
+  height: auto; /* Mantém a proporção correta para não achatar */
+  border-radius: 4px; /* Detalhe premium: deixa os cantos arredondados */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
+  cursor: default;
+  transition:
+    transform 0.2s ease,
+    filter 0.2s ease;
+}
+
+/* O efeito hover continua funcionando perfeitamente nas imagens */
+.badge-flag:hover {
+  transform: scale(1.25);
+  filter: drop-shadow(0 4px 10px rgba(0, 149, 255, 0.5));
+}
+
+/* Ajuste específico para o ícone do bitcoin ficar redondo e com tamanho proporcional */
+.crypto-icon {
+  width: 24px;
+  height: 24px;
 }
 
 @media (max-width: 1024px) {

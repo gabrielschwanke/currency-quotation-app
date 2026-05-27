@@ -4,7 +4,7 @@ from .services import buscar_cotacao, buscar_historico
 
 main = Blueprint("main", __name__)
 
-MOEDAS_PERMITIDAS = {"USD", "EUR", "BTC"}
+MOEDAS_PERMITIDAS = {"USD", "EUR", "GBP", "ARS", "CAD","JPY", "CNY", "BTC", "ETH", "LTC", "DOGE"}
 PERIODOS_PERMITIDOS = {7, 15, 30}
 
 

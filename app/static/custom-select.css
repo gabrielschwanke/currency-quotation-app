@@ -1,0 +1,113 @@
+/* Container principal do select customizado */
+.custom-select-container {
+    position: relative;
+    position: relative;
+    display: block;
+    width: 100%;
+    font-family: inherit;
+    user-select: none;
+}
+
+/* Esconde o select nativo de forma acessível */
+.custom-select-container select {
+    display: none; 
+}
+
+/* O botão principal do Select (o que fica visível) */
+.select-styled {
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 8px;
+    color: #ffffff;
+    padding: 12px 16px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+/* Efeito Hover e Foco no botão principal */
+.select-styled:hover, 
+.custom-select-container.active .select-styled {
+    border-color: rgba(0, 149, 255, 0.5);
+    box-shadow: 0 0 10px rgba(0, 149, 255, 0.15);
+    background: rgba(255, 255, 255, 0.08);
+}
+
+/* A seta do select */
+.select-styled::after {
+    content: "";
+    width: 0;
+    height: 0;
+    border-left: 5px solid transparent;
+    border-right: 5px solid transparent;
+    border-top: 5px solid #ffffff;
+    transition: transform 0.3s ease;
+}
+
+/* Rotaciona a seta quando o menu abrir */
+.custom-select-container.active .select-styled::after {
+    transform: rotate(180deg);
+}
+
+/* A lista suspensa (Dropdown) */
+.select-options {
+    display: none;
+    position: absolute;
+    top: calc(100% + 6px);
+    right: 0;
+    left: 0;
+    z-index: 999;
+    margin: 0;
+    padding: 6px 0;
+    list-style: none;
+    background: #0d1527; /* Fundo escuro combinando com seu tema */
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 8px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+    max-height: 260px;
+    overflow-y: auto;
+}
+
+/* Mostra as opções com classe ativa */
+.custom-select-container.active .select-options {
+    display: block;
+}
+
+/* Título do Grupo (Substitutos do optgroup) */
+.select-group-title {
+    color: rgba(0, 149, 255, 0.8); /* Azul do seu botão de Login */
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    padding: 8px 16px 4px 16px;
+    font-weight: 700;
+}
+
+/* Cada opção individual da lista */
+.select-options li[data-value] {
+    padding: 10px 20px;
+    color: #e0e6ed;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-size: 0.95rem;
+}
+
+/* Efeito Hover na opção */
+.select-options li[data-value]:hover {
+    background-color: rgba(0, 149, 255, 0.2);
+    color: #ffffff;
+    padding-left: 24px; /* Efeito sutil de deslocamento */
+}
+
+/* Estilização da barra de rolagem interna do dropdown */
+.select-options::-webkit-scrollbar {
+    width: 6px;
+}
+.select-options::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 4px;
+}

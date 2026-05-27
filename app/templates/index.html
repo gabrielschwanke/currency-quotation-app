@@ -13,6 +13,7 @@
       rel="stylesheet"
       href="{{ url_for('static', filename='style.css') }}"
     />
+    <link rel="stylesheet" href="{{ url_for('static', filename='custom-select.css') }}" />
   </head>
 
   <body>
@@ -69,15 +70,27 @@
               <div class="field">
                 <label for="moeda-form">Moeda</label>
                 <select id="moeda-form" name="moeda">
-                  <option value="USD">Dólar (USD)</option>
-                  <option value="EUR">Euro (EUR)</option>
-                  <option value="BTC">Bitcoin (BTC)</option>
+                  <optgroup label="Moedas Tradicionais">
+                    <option value="USD" {% if moeda == 'USD' %}selected{% endif %}>Dólar (USD)</option>
+                    <option value="EUR" {% if moeda == 'EUR' %}selected{% endif %}>Euro (EUR)</option>
+                    <option value="GBP" {% if moeda == 'GBP' %}selected{% endif %}>Libra Esterlina (GBP)</option>
+                    <option value="ARS" {% if moeda == 'ARS' %}selected{% endif %}>Peso Argentino (ARS)</option>
+                    <option value="CAD" {% if moeda == 'CAD' %}selected{% endif %}>Dólar Canadense (CAD)</option>
+                    <option value="JPY" {% if moeda == 'JPY' %}selected{% endif %}>Iene Japonês (JPY)</option>
+                    <option value="CNY" {% if moeda == 'CNY' %}selected{% endif %}>Yuan Chinês (CNY)</option>
+                  </optgroup>
+                  <optgroup label="Criptomoedas">
+                    <option value="BTC" {% if moeda == 'BTC' %}selected{% endif %}>Bitcoin (BTC)</option>
+                    <option value="ETH" {% if moeda == 'ETH' %}selected{% endif %}>Ethereum (ETH)</option>
+                    <option value="LTC" {% if moeda == 'LTC' %}selected{% endif %}>Litecoin (LTC)</option>
+                    <option value="DOGE" {% if moeda == 'DOGE' %}selected{% endif %}>Dogecoin (DOGE)</option>
+                  </optgroup>
                 </select>
               </div>
 
               <div class="field">
                 <label for="data">Data</label>
-                <input id="data" type="date" name="data" required />
+                <input id="data" type="date" name="data" onclick="this.showPicker()" required />
               </div>
 
               <button type="submit">Buscar cotação</button>
@@ -196,5 +209,6 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="{{ url_for('static', filename='js/chart.js') }}"></script>
     <script src="{{ url_for('static', filename='js/effects.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/custom-select.js') }}"></script>
   </body>
 </html>

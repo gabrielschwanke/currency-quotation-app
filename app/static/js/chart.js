@@ -91,6 +91,8 @@ async function carregarGrafico() {
 
     const dados = await response.json();
 
+    console.log("DADOS BRUTOS DA API:", dados);
+
     if (!Array.isArray(dados) || dados.length === 0) {
       if (chart) {
         chart.destroy();

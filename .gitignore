@@ -1,4 +1,17 @@
 venv/
+.venv/
+env/
 __pycache__/
 *.pyc
+*.pyo
+*.pyd
+.pytest_cache/
+.htmlcov/
+
+.vscode/
+
+.DS_Store
+Thumbs.db
+
 .env
+.env.*  

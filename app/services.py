@@ -7,10 +7,21 @@ TIMEOUT = 10
 
 
 def _request_json(url: str) -> Any:
-    response = requests.get(url, timeout=TIMEOUT)
+    headers = {
+        "User-Agent": "Mozilla/5.0"
+    }
+
+    response = requests.get(
+        url,
+        timeout=TIMEOUT,
+        headers=headers
+    )
+
+    print("STATUS:", response.status_code)
+    print("RESPOSTA:", response.text)
+
     response.raise_for_status()
     return response.json()
-
 
 def _normalizar_data(data: str) -> str:
     """

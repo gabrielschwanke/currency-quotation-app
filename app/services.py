@@ -92,7 +92,8 @@ def buscar_historico(moeda: str, dias: int = 7) -> List[Dict[str, Any]]:
         moeda = moeda.upper().strip()
         dias = int(dias)
 
-        url = f"{BASE_URL}/json/daily/{moeda}-BRL?periodo={dias}"
+        # 🔄 Voltando para a URL original que a API aceita perfeitamente
+        url = f"{BASE_URL}/json/daily/{moeda}-BRL/{dias}"
         dados = _request_json(url)
 
         if isinstance(dados, dict) and dados.get("status"):
@@ -105,14 +106,15 @@ def buscar_historico(moeda: str, dias: int = 7) -> List[Dict[str, Any]]:
 
         for item in dados:
             try:
+                # 🎯 O SEGREDO: Pegamos o timestamp ou a data de criação (o que estiver disponível)
                 timestamp = item.get("timestamp") or item.get("create_date")
                 bid = item.get("bid")
 
                 if timestamp is None or bid is None:
                     continue
 
+                # Se o servidor do Render receber como texto ("2026-05-28 12:00:00")
                 if isinstance(timestamp, str) and "-" in timestamp:
-                    # Converte a string da AwesomeAPI para objeto data e depois para timestamp em segundos
                     dt = datetime.strptime(timestamp, "%Y-%m-%d %H:%M:%S")
                     ts_final = int(dt.timestamp())
                 else:

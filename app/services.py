@@ -7,7 +7,7 @@ TIMEOUT = 10
 
 
 def _request_json(url: str) -> Any:
-    response = requests.get(url, timeout=TIMEOUT, verify=False)
+    response = requests.get(url, timeout=TIMEOUT)
     response.raise_for_status()
     return response.json()
 

@@ -85,5 +85,5 @@ def historico_api(moeda, dias):
 
     except Exception:
         return jsonify({
-            "erro": "Erro ao buscar histórico da moeda."
+            "erro": str(e)
         }), 500

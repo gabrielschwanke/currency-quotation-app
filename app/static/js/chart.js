@@ -242,13 +242,7 @@ async function carregarGrafico() {
 }
 
 function iniciarAutoRefresh() {
-  if (autoRefreshId) return;
-
-  autoRefreshId = setInterval(() => {
-    if (!document.hidden && carregado) {
-      carregarGrafico();
-    }
-  }, 10000);
+     return;
 }
 
 function observarSecaoGrafico() {

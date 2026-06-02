@@ -1,15 +1,31 @@
 from datetime import datetime
 from typing import List, Dict, Any, Optional
 import requests
+import json
+import os
 
 BASE_URL = "https://economia.awesomeapi.com.br"
 TIMEOUT = 10
+CACHE_DIR = "/tmp"
+CACHE_EXPIRATION_MINUTES = 15
 
 
 def _request_json(url: str) -> Any:
     headers = {
         "User-Agent": "Mozilla/5.0"
     }
+
+    nome_arquivo_cache = url.replace("https://", "").replace("/", "_").replace("?", "_").replace("&", "_") + ".json"
+    caminho_cache = os.path.join(CACHE_DIR, nome_arquivo_cache)
+
+    if os.path.exists(caminho_cache):
+        tempo_criacao = datetime.fromtimestamp(os.path.getmtime(caminho_cache))
+        if datetime.now() - tempo_criacao < timedelta(minutes=CACHE_EXPIRATION_MINUTES):
+            print(f"⚡ [CACHE HIT] Servindo dados locais para: {url}")
+            with open(caminho_cache, "r", encoding="utf-8") as f:
+                return json.load(f)
+            
+    print(f"🌐 [API CALL] Buscando dados reais na API para: {url}")   
 
     response = requests.get(
         url,
@@ -18,10 +34,22 @@ def _request_json(url: str) -> Any:
     )
 
     print("STATUS:", response.status_code)
-    print("RESPOSTA:", response.text)
+    if response.status_code != 200 and os.path.exists(caminho_cache):
+        print("⚠️ [API ERR] Usando cache expirado como plano de emergência!")
+        with open(caminho_cache, "r", encoding="utf-8") as f:
+            return json.load(f)
 
     response.raise_for_status()
-    return response.json()
+    dados_json = response.json()
+
+    try:
+        with open(caminho_cache, "w", encoding="utf-8") as f:
+            json.dump(dados_json, f, ensure_ascii=False, indent=4)
+        print("💾 [CACHE SAVED] Dados salvos localmente com sucesso.")
+    except Exception as e:
+        print(f"Erro ao salvar o arquivo de cache: {e}")
+
+    return dados_json
 
 def _normalizar_data(data: str) -> str:
     """

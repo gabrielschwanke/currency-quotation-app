@@ -4,7 +4,7 @@ import requests
 import json
 import os
 
-BASE_URL = "https://economia.awesomeapi.com.br"
+BASE_URL = "https://api.allorigins.win/raw?url=https://economia.awesomeapi.com.br"
 TIMEOUT = 10
 CACHE_DIR = "/tmp"
 CACHE_EXPIRATION_MINUTES = 15
@@ -131,7 +131,6 @@ def buscar_historico(moeda: str, dias: int = 7) -> List[Dict[str, Any]]:
         moeda = moeda.upper().strip()
         dias = int(dias)
 
-        # 🔄 Voltando para a URL original que a API aceita perfeitamente
         url = f"{BASE_URL}/json/daily/{moeda}-BRL/{dias}"
         dados = _request_json(url)
 
@@ -145,35 +144,27 @@ def buscar_historico(moeda: str, dias: int = 7) -> List[Dict[str, Any]]:
 
         for item in dados:
             try:
-                # 🎯 O SEGREDO: Pegamos o timestamp ou a data de criação (o que estiver disponível)
                 timestamp = item.get("timestamp") or item.get("create_date")
                 bid = item.get("bid")
 
                 if timestamp is None or bid is None:
                     continue
 
-                # Se o servidor do Render receber como texto ("2026-05-28 12:00:00")
                 if isinstance(timestamp, str) and "-" in timestamp:
                     dt = datetime.strptime(timestamp, "%Y-%m-%d %H:%M:%S")
                     ts_final = int(dt.timestamp())
                 else:
                     ts_final = _normalizar_timestamp(timestamp)
 
-                historico.append(
-                    {
-                        "data": ts_final,
-                        "valor": float(bid),
-                    }
-                )
+                historico.append({
+                    "data": ts_final,
+                    "valor": float(bid),
+                })
             except (ValueError, TypeError):
                 continue
 
         historico.sort(key=lambda x: x["data"])
         return historico
 
-    except requests.exceptions.Timeout:
-        return []
-    except requests.exceptions.RequestException:
-        return []
     except Exception:
         return []

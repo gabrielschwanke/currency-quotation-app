@@ -4,7 +4,7 @@ import requests
 import json
 import os
 
-BASE_URL = "https://api.allorigins.win/raw?url=https://economia.awesomeapi.com.br"
+BASE_URL = "https://economia.awesomeapi.com.br"
 TIMEOUT = 10
 CACHE_DIR = "/tmp"
 CACHE_EXPIRATION_MINUTES = 15

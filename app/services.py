@@ -1,10 +1,14 @@
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, date
 from typing import Any, Dict, List, Tuple
 import requests
 
-BASE_URL = "https://economia.awesomeapi.com.br"
+BASE_URL_FIAT = "https://api.frankfurter.app"
+BASE_URL_CRYPTO = "https://api.coingecko.com/api/v3"
 TIMEOUT = 10
 CACHE_EXPIRATION_MINUTES = 15
+
+CRIPTOS = {"BTC", "ETH", "LTC", "DOGE"}
+CRYPTO_IDS = {"BTC": "bitcoin", "ETH": "ethereum", "LTC": "litecoin", "DOGE": "dogecoin"}
 
 _cache: Dict[str, Tuple[Any, datetime]] = {}
 
@@ -62,95 +66,60 @@ def _normalizar_timestamp(timestamp: Any) -> int:
  
  
 def buscar_cotacao(moeda: str, data: str) -> str:
-    """
-    Busca a cotação de uma moeda para uma data específica.
-    Retorna string formatada para exibição no template.
-    """
     try:
         moeda = moeda.upper().strip()
-        data_formatada = _normalizar_data(data)
- 
-        url = (
-            f"{BASE_URL}/json/daily/{moeda}-BRL/"
-            f"?start_date={data_formatada}&end_date={data_formatada}"
-        )
- 
-        dados = _request_json(url)
- 
-        if isinstance(dados, dict) and dados.get("status") == 404:
-            return "Cotação não encontrada para a moeda informada."
- 
-        if not isinstance(dados, list) or not dados:
-            return "Cotação não encontrada para a data informada."
- 
-        item = dados[0]
-        bid = item.get("bid")
- 
-        if bid is None:
-            return "Cotação indisponível no momento."
- 
-        valor = float(bid)
+        datetime.strptime(data, "%Y-%m-%d")
+
+        if moeda in CRIPTOS:
+            coin_id = CRYPTO_IDS[moeda]
+            url = f"{BASE_URL_CRYPTO}/coins/{coin_id}/history?date={datetime.strptime(data, '%Y-%m-%d').strftime('%d-%m-%Y')}&localization=false"
+            dados = _request_json(url)
+            valor = dados["market_data"]["current_price"]["brl"]
+        else:
+            url = f"{BASE_URL_FIAT}/{data}?from={moeda}&to=BRL"
+            dados = _request_json(url)
+            valor = dados["rates"]["BRL"]
+
         return f"R$ {valor:,.2f}".replace(",", "X").replace(".", ",").replace("X", ".")
- 
+
     except ValueError:
         return "Data inválida. Use uma data válida no formato correto."
     except requests.exceptions.Timeout:
         return "A consulta demorou demais para responder. Tente novamente."
     except requests.exceptions.RequestException:
         return "Erro de conexão ao buscar a cotação."
-    except (KeyError, TypeError, IndexError):
-        return "Resposta inválida ao buscar a cotação."
+    except (KeyError, TypeError):
+        return "Cotação não encontrada para a data informada."
     except Exception:
         return "Erro ao buscar cotação."
  
  
 def buscar_historico(moeda: str, dias: int = 7) -> List[Dict[str, Any]]:
-    """
-    Busca histórico de fechamento da moeda nos últimos dias.
-    Retorna lista no formato:
-    [
-        {"data": 1711843200, "valor": 5.12},
-        ...
-    ]
-    """
     try:
         moeda = moeda.upper().strip()
         dias = int(dias)
- 
-        url = f"{BASE_URL}/json/daily/{moeda}-BRL/{dias}"
-        dados = _request_json(url)
- 
-        if isinstance(dados, dict) and dados.get("status") == 404:
-            return []
- 
-        if not isinstance(dados, list) or not dados:
-            return []
- 
-        historico: List[Dict[str, Any]] = []
- 
-        for item in dados:
-            try:
-                timestamp = item.get("timestamp") or item.get("create_date")
-                bid = item.get("bid")
- 
-                if timestamp is None or bid is None:
-                    continue
- 
-                if isinstance(timestamp, str) and "-" in timestamp:
-                    dt = datetime.strptime(timestamp, "%Y-%m-%d %H:%M:%S")
-                    ts_final = int(dt.timestamp())
-                else:
-                    ts_final = _normalizar_timestamp(timestamp)
- 
-                historico.append({
-                    "data": ts_final,
-                    "valor": float(bid),
-                })
-            except (ValueError, TypeError):
-                continue
- 
+        hoje = date.today()
+        data_inicio = (hoje - timedelta(days=dias)).isoformat()
+        data_fim = hoje.isoformat()
+
+        if moeda in CRIPTOS:
+            coin_id = CRYPTO_IDS[moeda]
+            url = f"{BASE_URL_CRYPTO}/coins/{coin_id}/market_chart?vs_currency=brl&days={dias}&interval=daily"
+            dados = _request_json(url)
+            historico = [
+                {"data": int(ts / 1000), "valor": round(valor, 2)}
+                for ts, valor in dados.get("prices", [])
+            ]
+        else:
+            url = f"{BASE_URL_FIAT}/{data_inicio}..{data_fim}?from={moeda}&to=BRL"
+            dados = _request_json(url)
+            historico = [
+                {"data": int(datetime.strptime(d, "%Y-%m-%d").timestamp()), "valor": round(v, 2)}
+                for d, v in dados.get("rates", {}).items()
+            ]
+
         historico.sort(key=lambda x: x["data"])
         return historico
- 
+
     except Exception:
         return []

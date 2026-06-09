@@ -99,8 +99,8 @@ def buscar_historico(moeda: str, dias: int = 7) -> List[Dict[str, Any]]:
         moeda = moeda.upper().strip()
         dias = int(dias)
         hoje = date.today()
-        data_inicio = (hoje - timedelta(days=dias)).isoformat()
-        data_fim = hoje.isoformat()
+        data_inicio = (hoje - timedelta(days=dias + 10)).isoformat()
+        data_fim = (hoje - timedelta(days=1)).isoformat()
 
         if moeda in CRIPTOS:
             coin_id = CRYPTO_IDS[moeda]
@@ -114,7 +114,7 @@ def buscar_historico(moeda: str, dias: int = 7) -> List[Dict[str, Any]]:
             url = f"{BASE_URL_FIAT}/{data_inicio}..{data_fim}?from={moeda}&to=BRL"
             dados = _request_json(url)
             historico = [
-                {"data": int(datetime.strptime(d, "%Y-%m-%d").timestamp()), "valor": round(v, 2)}
+                {"data": int(datetime.strptime(d, "%Y-%m-%d").timestamp()), "valor": round(v["BRL"], 2)}
                 for d, v in dados.get("rates", {}).items()
             ]
 

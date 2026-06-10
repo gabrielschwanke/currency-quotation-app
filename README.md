@@ -10,6 +10,8 @@ The application provides real-time exchange rate information for fiat currencies
 
 🔗 https://currency-quotation-app.onrender.com/
 
+ℹ️ The first access may take a few seconds while the Render instance wakes up.
+
 ---
 
 ## Screenshots

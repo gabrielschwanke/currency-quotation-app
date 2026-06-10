@@ -16,7 +16,9 @@ The application provides real-time exchange rate information for fiat currencies
 
 ### Desktop View
 
-![Desktop Preview](app/static/img/desktop-preview.png)
+<p align="center">
+  <img src="app/static/img/mobile-preview.jpeg" width="250">
+</p>
 
 ### Mobile View
 

@@ -2,26 +2,42 @@
 
 A modern and responsive currency exchange tracking platform built with **Python**, **Flask**, and **JavaScript**.
 
-This project allows users to:
+The application provides real-time exchange rate information for fiat currencies and cryptocurrencies, allowing users to analyze historical price movements through interactive charts and a responsive user interface.
 
-* Check exchange rates for multiple currencies and cryptocurrencies
-* View historical price charts
-* Analyze currency variation over the last 7, 15, or 30 days
-* Access a clean and responsive interface with smooth visual effects
+---
+
+## Live Demo
+
+🔗 https://currency-quotation-app.onrender.com/
+
+---
+
+## Screenshots
+
+### Desktop View
+
+![Desktop Preview](app/static/img/desktop-preview.png)
+
+### Mobile View
+
+![Mobile Preview](images/mobile-preview.jpeg)
 
 ---
 
 ## Features
 
-* Real-time currency exchange quotes
+* Real-time exchange rate tracking
 * Historical price charts
-* Support for fiat currencies and cryptocurrencies
-* Responsive modern UI
-* Smooth glassmorphism design
-* Interactive chart visualization
-* Custom select component
-* Input validation and error handling
-* API-based architecture
+* Fiat currency support
+* Cryptocurrency support
+* Interactive data visualization
+* Dynamic variation analysis
+* Responsive modern interface
+* Custom select components
+* Smooth hover animations
+* Input validation
+* Error handling
+* API-driven architecture
 
 ---
 
@@ -32,7 +48,6 @@ This project allows users to:
 * USD
 * EUR
 * GBP
-* ARS
 * CAD
 * JPY
 * CNY
@@ -43,6 +58,78 @@ This project allows users to:
 * ETH
 * LTC
 * DOGE
+
+---
+
+## Key Technical Features
+
+### API Integration
+
+The application integrates multiple external services:
+
+* Frankfurter API for fiat currencies
+* CoinGecko API for cryptocurrencies
+
+### Historical Data Processing
+
+* Historical quote retrieval
+* Data normalization
+* Timestamp standardization
+* Dynamic chart rendering
+
+### Performance Optimization
+
+* In-memory caching system
+* Reduced API requests
+* Faster response times
+* Cached data fallback during API failures
+
+### Error Handling
+
+Protection against:
+
+* Invalid currencies
+* Invalid dates
+* API connection failures
+* Timeout exceptions
+* Invalid response formats
+
+### Frontend Enhancements
+
+* Custom Select Component
+* Dynamic Chart.js integration
+* Lazy-loaded chart rendering
+* Hover animations
+* Responsive layouts
+
+---
+
+## Architecture
+
+```text
+User
+ │
+ ▼
+Flask Application
+ │
+ ├── routes.py
+ │
+ ├── services.py
+ │
+ ▼
+External APIs
+ ├── Frankfurter API
+ └── CoinGecko API
+ │
+ ▼
+Processed Data
+ │
+ ▼
+Chart.js Visualization
+ │
+ ▼
+Responsive User Interface
+```
 
 ---
 
@@ -60,9 +147,14 @@ This project allows users to:
 * CSS3
 * JavaScript
 
+### Data Visualization
+
+* Chart.js
+
 ### APIs
 
-* AwesomeAPI
+* Frankfurter API
+* CoinGecko API
 
 ---
 
@@ -72,86 +164,97 @@ This project allows users to:
 project/
 │
 ├── app/
+│   ├── __init__.py
 │   ├── routes.py
 │   ├── services.py
-│   └── templates/
-│
-├── static/
-│   ├── css/
-│   │   └── style.css
 │   │
-│   └── js/
-│       ├── chart.js
-│       ├── custom-select.js
-│       └── effects.js
+│   ├── templates/
+│   │   └── index.html
+│   │
+│   └── static/
+│       ├── img/
+│       │
+│       ├── js/
+│       │   ├── chart.js
+│       │   ├── custom-select.js
+│       │   └── effects.js
+│       │
+│       ├── style.css
+│       └── custom-select.css
 │
-├── run.py
-└── requirements.txt
+├── .env
+├── .gitignore
+├── README.md
+├── requirements.txt
+└── run.py
 ```
 
 ---
 
 ## Backend Overview
 
-### `routes.py`
+### routes.py
 
 Responsible for:
 
 * Route management
 * Form processing
 * Currency validation
-* API endpoints
-* Historical data responses
+* API endpoint creation
+* Historical data delivery
 
-### `services.py`
+### services.py
 
 Responsible for:
 
 * External API communication
+* Cache management
 * Data normalization
-* Timestamp formatting
 * Historical data processing
-* Exception handling
+* Timestamp conversion
+* Error handling and fallback logic
 
 ---
 
 ## Frontend Overview
 
-### `chart.js`
+### chart.js
 
-Handles:
+Responsible for:
 
-* Chart rendering
+* Interactive chart rendering
 * Historical data visualization
 * Dynamic updates
-* Currency variation display
+* Currency variation calculation
+* Lazy loading implementation
 
-### `custom-select.js`
+### custom-select.js
 
-Handles:
+Responsible for:
 
-* Custom select component behavior
-* Improved UI interactions
+* Custom dropdown behavior
+* Enhanced user interaction
+* Native select synchronization
 
-### `effects.js`
+### effects.js
 
-Handles:
+Responsible for:
 
 * Hover effects
-* Glass card lighting effects
 * Mouse interaction animations
+* Glassmorphism visual enhancements
 
 ---
 
 ## Responsive Design
 
-The interface was designed to work smoothly on:
+The interface was designed to provide a seamless experience across different screen sizes:
 
 * Desktop
 * Tablets
 * Mobile devices
 
-Using:
+Technologies used:
 
 * CSS Grid
 * Flexbox
@@ -159,24 +262,19 @@ Using:
 
 ---
 
-## Error Handling
+## APIs Used
 
-The application includes validation and protection for:
+### Frankfurter API
 
-* Invalid currencies
-* Invalid dates
-* API failures
-* Timeout errors
-* Unexpected response formats
+Used for fiat currency exchange rates.
 
----
+https://www.frankfurter.app/
 
-## API Used
+### CoinGecko API
 
-This project uses data from:
+Used for cryptocurrency market data and historical prices.
 
-AwesomeAPI
-https://docs.awesomeapi.com.br/
+https://www.coingecko.com/en/api
 
 ---
 
@@ -185,11 +283,10 @@ https://docs.awesomeapi.com.br/
 Clone the repository:
 
 ```bash
-GitHub Repository:
-https://github.com/gabrielschwanke/currency-quotation-app
+git clone https://github.com/gabrielschwanke/currency-quotation-app.git
 ```
 
-Enter the project folder:
+Navigate to the project folder:
 
 ```bash
 cd currency-quotation-app
@@ -207,22 +304,23 @@ Run the application:
 python run.py
 ```
 
+Open in your browser:
+
+```text
+http://localhost:5000
+```
+
 ---
-
-## Live Demo 
-
-The application is deployed on Render:
-
-🔗 https://currency-quotation-app.onrender.com/
 
 ## Future Improvements
 
 * User authentication
 * Favorite currencies
-* Dark/light theme switch
+* Dark/Light theme toggle
 * Currency conversion calculator
-* More cryptocurrencies
-* Live websocket updates
+* More cryptocurrency options
+* Real-time updates using WebSockets
+* User preferences persistence
 
 ---
 
@@ -235,3 +333,9 @@ This project is licensed under the MIT License.
 ## Author
 
 Developed by Gabriel Pereira Schwanke.
+
+GitHub:
+https://github.com/gabrielschwanke
+
+LinkedIn:
+(Add your LinkedIn profile URL here)

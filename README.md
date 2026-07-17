@@ -336,10 +336,4 @@ This project is licensed under the MIT License.
 
 ## Author
 
-Developed by Gabriel Pereira Schwanke.
-
-GitHub:
-https://github.com/gabrielschwanke
-
-LinkedIn:
-(Add your LinkedIn profile URL here)
+Gabriel Pereira Schwanke — Frontend Developer
